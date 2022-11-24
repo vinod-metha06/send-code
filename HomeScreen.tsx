@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer, useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, TextInput, Image, ActivityIndicator, Button } from 'react-native'
 // import { fetchData } from '../Api/service';
 import fetchDatafromAPI, { initialState } from '../Api/service';
@@ -9,46 +9,57 @@ const HomeScreen = () => {
 
     const [txt, setTxt] = useState('');
     const [data, setData] = useState([]);
-    const { state } = fetchDatafromAPI();
+    const [state, a] = fetchDatafromAPI();
 
 
     // console.log(state.post + "hhh");
 
+    useEffect(() => {
+
+        // a(1);
+        // console.log(state.post + "hhh");
+
+    }, []);
+
     const search = (id) => {
-            fetchDatafromAPI(id);
-        
-      }
+        console.log(id);
+        a(id);
+
+    }
 
 
-    const renderItemAPI = ( item ) => {
-        console.log(txt,item.id)
-        if(item.id!== undefined){
+    const renderItemAPI = ({item}) => {
 
-        
-        if (item.id.includes(txt)) {
+        console.log(item)
+
+        // if(item=== undefined){
+
+
+        // if (item?.id?.includes(txt)) {
             return (
                 <View style={{ flexDirection: 'row', justifyContent: 'space-around', margin: 10, }}>
                     <Text style={{ textAlign: 'center', color: '#000', alignSelf: 'center' }}>{item.id}</Text>
                     <Image style={{ height: 100, width: 100 }} source={{ uri: item.url }} />
                 </View>
             )
-        }
-    }
+        //     }
+        // }
     }
     if (state.loading) {
         return (
             <>
-            <TextInput
-            placeholder='enter id'
-            onChange={t => setTxt(t)}
-            style={styles.input}
-        />
+                <TextInput
+                    placeholder='enter id'
+                    onChangeText={t => setTxt(t)}
+                    style={styles.input}
+                />
 
-        <Button title='serach'
-            onPress={() => { search(txt) }} />
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <ActivityIndicator size="large" color="#00ff00" />
-            </View>
+                <Button title='serach'
+                    onPress={() => search(txt)} />
+
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <ActivityIndicator size="large" color="#00ff00" />
+                </View>
             </>
 
         )
@@ -68,11 +79,16 @@ const HomeScreen = () => {
             <Button title='serach'
                 onPress={() => { search(txt) }} />
 
-            <FlatList
-                data={state.post.slice(0, 10)}
+            {/* <FlatList
+                data={state?.post?.slice(0,10)?state?.post?.filter(e=>e.id==+txt).slice(0,10):[]}
                 renderItem={renderItemAPI}
                 keyExtractor={item => item.id}
-            />
+            /> */}
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around', margin: 10, }}>
+                <Text style={{ textAlign: 'center', color: '#000', alignSelf: 'center' }}>{state.post.id}</Text>
+                <Image style={{ height: 100, width: 100 }} source={{ uri: state.post.url }} />
+            </View>
 
         </View>
     );
