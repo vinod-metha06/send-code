@@ -39,27 +39,35 @@ export const initialState = {
 }
 
 
-function fetchDatafromAPI(id) {
+function fetchDatafromAPI() {
     const [state, dispatch] = useReducer(reducer, initialState)
-    const URL = `https://jsonplaceholder.typicode.com/photos${id}`
+   
 
     useEffect(() => {
 
-        async function a(){
-           await axios
-            .get(URL)
-            .then(response => {
-                dispatch({ type: 'FETCH_SUCCESS', payload: response.data })
-            })
-            .catch(error => {
-                dispatch({ type: 'FETCH_ERRROR', payload: error })
-            })
-        }
-        a();
+      
+        // a();
         
-    }, [])
+    }, []);
 
-    return { state }
+    function a(id){
+        console.log(id)
+       const URL = `https://jsonplaceholder.typicode.com/photos/${id}`
+       console.log(URL)
+        // const URL = `https://jsonplaceholder.typicode.com/photos`
+        axios
+        .get(URL)
+        .then(response => {
+            dispatch({ type: 'FETCH_SUCCESS', payload: response.data })
+            // console.log(response.data)
+        })
+        .catch(error => {
+            dispatch({ type: 'FETCH_ERRROR' })
+            console.log(error)
+        })
+    }
+    
+    return [state,a] 
 }
 
 export default fetchDatafromAPI;
